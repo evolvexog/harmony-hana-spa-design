@@ -7,43 +7,62 @@
   <title>Harmony @ Hana — Day Spa Bloemfontein</title>
   <link rel="stylesheet" href="./client/assets/styles-DqIPEx-k.css">
   <style>
-    body { margin: 0; padding: 20px; font-family: system-ui; }
+    body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    #root { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
-  <div id="root" style="min-height:100vh">
-    <header style="background:#f5f0ed;padding:40px 20px;margin-bottom:40px">
-      <h1 style="font-size:48px;margin:0;color:#2c2c2c">Harmony <span style="font-style:italic">@</span> Hana</h1>
-      <p style="color:#666;margin:10px 0 0 0">Premium Day Spa</p>
-    </header>
-    <div style="color:#666;padding:40px">
-      <h2>Loading application...</h2>
-      <p>Attempting to initialize React application.</p>
-      <p id="status" style="color:#999">Initializing...</p>
-    </div>
-  </div>
+  <div id="root"></div>
 
   <script type="module">
-    console.log('=== Application Boot ===');
-    console.log('Attempting to load: ./client/assets/index-jjFQKNax.js');
+    console.log('=== TanStack Start App Boot ===');
+    
+    // Set up environment for SSR-compiled client code
+    window.__INITIAL_STATE__ = { dehydrated: {} };
     
     try {
-      const module = await import('./client/assets/index-jjFQKNax.js');
-      console.log('✓ Module loaded successfully');
-      console.log('Module exports:', Object.keys(module));
-      document.getElementById('status').textContent = '✓ App loaded successfully';
+      console.log('Loading client bundle...');
+      const bundle = await import('./client/assets/index-jjFQKNax.js');
+      console.log('✓ Bundle loaded');
+      console.log('Available exports:', Object.keys(bundle));
+      
+      // Try to find and execute the app entry point
+      if (bundle.default) {
+        console.log('Found default export, attempting to initialize...');
+        await bundle.default();
+      } else if (bundle.start) {
+        console.log('Found start export, attempting to initialize...');
+        await bundle.start();
+      } else {
+        console.log('Module loaded but no entry point found');
+        console.log('Attempting to render with React...');
+      }
+      
     } catch (err) {
-      console.error('✗ Failed to load module:', err);
-      console.error('Error details:', {
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      });
-      document.getElementById('status').innerHTML = `
-        <div style="color:red">
-          <strong>Error loading app:</strong><br>
-          ${err.message}<br><br>
-          <small>Check browser console (Ctrl+Shift+I) for more details</small>
+      console.error('=== Boot Error ===');
+      console.error('Error:', err.message);
+      console.error('Type:', err.constructor.name);
+      console.error('Stack:', err.stack);
+      
+      // Show error in UI
+      const root = document.getElementById('root');
+      root.innerHTML = `
+        <div style="
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: monospace;
+          background: #f5f5f5;
+          padding: 20px;
+        ">
+          <div style="max-width: 600px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1)">
+            <h2 style="color: #d32f2f; margin-top: 0">Application Error</h2>
+            <p><strong>Error Type:</strong> ${err.constructor.name}</p>
+            <p><strong>Message:</strong></p>
+            <pre style="background: #f5f5f5; padding: 10px; border-left: 3px solid #d32f2f; overflow-x: auto">${err.message}</pre>
+            <p style="color: #666; font-size: 12px">This app requires server-side rendering. Consider deploying to Cloudflare Workers instead of Netlify.</p>
+          </div>
         </div>
       `;
     }
