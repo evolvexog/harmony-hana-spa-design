@@ -6,21 +6,46 @@
   <meta name="description" content="Premium day spa in Bloemfontein. Massages, nails, facials, waxing & body treatments at Harmony @ Hana.">
   <title>Harmony @ Hana — Day Spa Bloemfontein</title>
   <link rel="stylesheet" href="./client/assets/styles-DqIPEx-k.css">
+  <style>
+    body { margin: 0; padding: 20px; font-family: system-ui; }
+  </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root" style="min-height:100vh">
+    <header style="background:#f5f0ed;padding:40px 20px;margin-bottom:40px">
+      <h1 style="font-size:48px;margin:0;color:#2c2c2c">Harmony <span style="font-style:italic">@</span> Hana</h1>
+      <p style="color:#666;margin:10px 0 0 0">Premium Day Spa</p>
+    </header>
+    <div style="color:#666;padding:40px">
+      <h2>Loading application...</h2>
+      <p>Attempting to initialize React application.</p>
+      <p id="status" style="color:#999">Initializing...</p>
+    </div>
+  </div>
+
   <script type="module">
-    console.log('Script starting...');
+    console.log('=== Application Boot ===');
+    console.log('Attempting to load: ./client/assets/index-jjFQKNax.js');
+    
     try {
-      import('./client/assets/index-jjFQKNax.js').then(module => {
-        console.log('Module imported successfully:', module);
-      }).catch(err => {
-        console.error('Failed to import module:', err);
-        document.getElementById('root').innerHTML = `<div style="padding:20px;color:red">Error loading app: ${err.message}</div>`;
+      const module = await import('./client/assets/index-jjFQKNax.js');
+      console.log('✓ Module loaded successfully');
+      console.log('Module exports:', Object.keys(module));
+      document.getElementById('status').textContent = '✓ App loaded successfully';
+    } catch (err) {
+      console.error('✗ Failed to load module:', err);
+      console.error('Error details:', {
+        name: err.name,
+        message: err.message,
+        stack: err.stack
       });
-    } catch(err) {
-      console.error('Script error:', err);
-      document.getElementById('root').innerHTML = `<div style="padding:20px;color:red">Error: ${err.message}</div>`;
+      document.getElementById('status').innerHTML = `
+        <div style="color:red">
+          <strong>Error loading app:</strong><br>
+          ${err.message}<br><br>
+          <small>Check browser console (Ctrl+Shift+I) for more details</small>
+        </div>
+      `;
     }
   </script>
 </body>
