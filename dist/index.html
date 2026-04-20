@@ -6,16 +6,22 @@
   <meta name="description" content="Premium day spa in Bloemfontein. Massages, nails, facials, waxing & body treatments at Harmony @ Hana.">
   <title>Harmony @ Hana — Day Spa Bloemfontein</title>
   <link rel="stylesheet" href="./client/assets/styles-DqIPEx-k.css">
-  <script>
-    window.__INITIAL_STATE__ = {};
-  </script>
 </head>
 <body>
-  <div id="root">
-    <div style="display:flex;height:100vh;align-items:center;justify-content:center;font-family:sans-serif;color:#666">Loading...</div>
-  </div>
+  <div id="root"></div>
   <script type="module">
-    import './client/assets/index-jjFQKNax.js';
+    console.log('Script starting...');
+    try {
+      import('./client/assets/index-jjFQKNax.js').then(module => {
+        console.log('Module imported successfully:', module);
+      }).catch(err => {
+        console.error('Failed to import module:', err);
+        document.getElementById('root').innerHTML = `<div style="padding:20px;color:red">Error loading app: ${err.message}</div>`;
+      });
+    } catch(err) {
+      console.error('Script error:', err);
+      document.getElementById('root').innerHTML = `<div style="padding:20px;color:red">Error: ${err.message}</div>`;
+    }
   </script>
 </body>
 </html>
