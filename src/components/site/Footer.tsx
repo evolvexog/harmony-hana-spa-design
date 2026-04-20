@@ -14,7 +14,7 @@ export function Footer() {
             to restore balance to body and mind.
           </p>
           <div className="flex gap-3 mt-6">
-            <a href="#" aria-label="Instagram" className="w-10 h-10 rounded-full border border-primary-foreground/25 flex items-center justify-center hover:bg-accent hover:border-accent transition-all">
+            <a href="https://www.instagram.com/harmonyathana_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" aria-label="Instagram" className="w-10 h-10 rounded-full border border-primary-foreground/25 flex items-center justify-center hover:bg-accent hover:border-accent transition-all">
               <Instagram size={16} />
             </a>
             <a href="#" aria-label="Facebook" className="w-10 h-10 rounded-full border border-primary-foreground/25 flex items-center justify-center hover:bg-accent hover:border-accent transition-all">
